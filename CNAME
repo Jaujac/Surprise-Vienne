@@ -1,1 +1,4 @@
-www.musette.com
+Type: CNAME
+Nom: www.musette.com
+Valeur: jaujac.github.io
+TTL: 3600
