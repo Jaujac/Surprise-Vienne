@@ -52,7 +52,7 @@
 
         /* Champ de saisie - Avec bordure verte et marge équilibrée */
         input {
-            width: calc(100% - 40px); /* Ajuste la largeur pour une marge équilibrée */
+            width: calc(100% - 40px);
             padding: 10px;
             margin: 10px 20px;
             border: 2px solid #2e7d32;
@@ -63,7 +63,7 @@
         }
 
         input:focus {
-            border-color: #1b5e20; /* Vert plus foncé au focus */
+            border-color: #1b5e20;
             box-shadow: 0px 0px 10px rgba(46, 125, 50, 0.5);
             outline: none;
         }
@@ -86,40 +86,37 @@
         /* Fil vert en arrière-plan */
         .fil-vert {
             position: absolute;
-            top: -10%;
+            top: 0;
             left: 50%;
-            width: 3px;
-            height: 120%;
+            width: 4px;
+            height: 100vh;
             background: linear-gradient(to bottom, transparent, #2e7d32, transparent);
-            opacity: 0.7;
+            opacity: 0.8;
             transform: translateX(-50%);
-            animation: filAnimation 6s ease-in-out infinite alternate;
+            animation: filAnimation 4s ease-in-out infinite alternate;
+            z-index: 1;
         }
 
         @keyframes filAnimation {
-            0% { transform: translateX(-50%) translateY(-5px); }
-            100% { transform: translateX(-50%) translateY(5px); }
+            0% { transform: translateX(-50%) translateY(-10px); }
+            100% { transform: translateX(-50%) translateY(10px); }
         }
 
         /* Effet poussière d'étoiles */
-        @keyframes sparkle {
-            0% { opacity: 0; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.2); }
-        }
-
-        .star {
+        canvas {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: sparkle 3s infinite;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
+
+    <!-- Fond avec étoiles -->
+    <canvas id="stars"></canvas>
 
     <!-- Fil vert en arrière-plan -->
     <div class="fil-vert"></div>
@@ -144,22 +141,56 @@
             }
         }
 
-        // Génération des étoiles scintillantes
+        // Génération des étoiles scintillantes avec <canvas>
         function createStars() {
-            for (let i = 0; i < 20; i++) { // Nombre d'étoiles
-                let star = document.createElement("div");
-                star.classList.add("star");
-                document.body.appendChild(star);
+            const canvas = document.getElementById("stars");
+            const ctx = canvas.getContext("2d");
 
-                let x = Math.random() * window.innerWidth;
-                let y = Math.random() * window.innerHeight;
-                let delay = Math.random() * 5;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-                star.style.left = `${x}px`;
-                star.style.top = `${y}px`;
-                star.style.animationDelay = `${delay}s`;
+            const stars = [];
+
+            for (let i = 0; i < 50; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.5
+                });
             }
+
+            function drawStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let star of stars) {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            function updateStars() {
+                for (let star of stars) {
+                    star.y += star.speed;
+                    if (star.y > canvas.height) {
+                        star.y = 0;
+                        star.x = Math.random() * canvas.width;
+                    }
+                }
+            }
+
+            function animateStars() {
+                updateStars();
+                drawStars();
+                requestAnimationFrame(animateStars);
+            }
+
+            animateStars();
         }
+
         createStars();
     </script>
 
