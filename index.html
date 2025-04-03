@@ -6,6 +6,16 @@
     <title>Enter the Magic Words</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap');
+        body {
+            background: linear-gradient(-45deg, #fbe4e6, #f8c8d0, #fbe4e6);
+            background-size: 300% 300%;
+            animation: gradientAnimation 10s ease-in-out infinite;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
         body {
             font-family: 'Playfair Display', serif;
