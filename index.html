@@ -6,31 +6,26 @@
     <title>Enter the Magic Words</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap');
+
+        /* Animation de fond - Vague fluide */
         body {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
             background: linear-gradient(-45deg, #fbe4e6, #f8c8d0, #fbe4e6);
             background-size: 300% 300%;
             animation: gradientAnimation 10s ease-in-out infinite;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
         }
+
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        body {
-            font-family: 'Playfair Display', serif;
-            text-align: center;
-            background-color: #fbe4e6; /* Rose pâle */
-            padding: 50px;
-            opacity: 0;
-            animation: fadeIn 1.5s ease-in-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
+        /* Conteneur du formulaire */
         .container {
             max-width: 400px;
             margin: auto;
@@ -38,12 +33,21 @@
             background: white;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
+            position: relative;
+            z-index: 10;
         }
 
         h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 36px;
             color: #a33e5c; /* Rose plus foncé */
+            opacity: 0;
+            animation: fadeInText 2s ease-in-out forwards;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         input {
@@ -63,21 +67,41 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: box-shadow 0.3s ease-in-out;
         }
 
         button:hover {
-            background-color: #892e4b;
+            box-shadow: 0px 4px 15px rgba(163, 62, 92, 0.4);
+        }
+
+        /* Effet poussière d'étoiles */
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 3s infinite;
         }
     </style>
 </head>
 <body>
 
+    <!-- Conteneur du formulaire -->
     <div class="container">
         <h2>Enter the Magic Words</h2>
         <input type="text" id="password" placeholder="Type here...">
         <button onclick="checkPassword()">Submit</button>
     </div>
 
+    <!-- Script pour le mot de passe -->
     <script>
         function checkPassword() {
             var input = document.getElementById("password").value;
@@ -89,6 +113,24 @@
                 alert("Try again...");
             }
         }
+
+        // Génération des étoiles scintillantes
+        function createStars() {
+            for (let i = 0; i < 20; i++) { // Nombre d'étoiles
+                let star = document.createElement("div");
+                star.classList.add("star");
+                document.body.appendChild(star);
+
+                let x = Math.random() * window.innerWidth;
+                let y = Math.random() * window.innerHeight;
+                let delay = Math.random() * 5;
+
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+                star.style.animationDelay = `${delay}s`;
+            }
+        }
+        createStars();
     </script>
 
 </body>
