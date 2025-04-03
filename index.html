@@ -91,3 +91,77 @@
             width: 3px;
             height: 120%;
             background: linear-gradient(to bottom, transparent, #2e7d32, transparent);
+            opacity: 0.7;
+            transform: translateX(-50%);
+            animation: filAnimation 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes filAnimation {
+            0% { transform: translateX(-50%) translateY(-5px); }
+            100% { transform: translateX(-50%) translateY(5px); }
+        }
+
+        /* Effet poussière d'étoiles */
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 3s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fil vert en arrière-plan -->
+    <div class="fil-vert"></div>
+
+    <!-- Conteneur du formulaire -->
+    <div class="container">
+        <h2>Enter the Magic Words</h2>
+        <input type="text" id="password" placeholder="Type here...">
+        <button onclick="checkPassword()">Submit</button>
+    </div>
+
+    <!-- Script pour le mot de passe -->
+    <script>
+        function checkPassword() {
+            var input = document.getElementById("password").value;
+            var correctPassword = "Musette and Flon Flon forever in the stars";
+            
+            if (input === correctPassword) {
+                window.location.href = "https://your-secret-page.com"; // Mets ici l'URL de la page finale
+            } else {
+                alert("Try again...");
+            }
+        }
+
+        // Génération des étoiles scintillantes
+        function createStars() {
+            for (let i = 0; i < 20; i++) { // Nombre d'étoiles
+                let star = document.createElement("div");
+                star.classList.add("star");
+                document.body.appendChild(star);
+
+                let x = Math.random() * window.innerWidth;
+                let y = Math.random() * window.innerHeight;
+                let delay = Math.random() * 5;
+
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+                star.style.animationDelay = `${delay}s`;
+            }
+        }
+        createStars();
+    </script>
+
+</body>
+</html>
